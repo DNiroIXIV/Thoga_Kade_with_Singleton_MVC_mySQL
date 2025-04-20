@@ -4,6 +4,13 @@
  */
 package thogakade.view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import thogakade.controller.CustomerController;
+import thogakade.model.Customer;
+
 /**
  *
  * @author Nirodha
@@ -84,6 +91,11 @@ public class AddCustomerForm extends javax.swing.JFrame {
         btnAddCustomer.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAddCustomer.setForeground(new java.awt.Color(0, 0, 0));
         btnAddCustomer.setText("Add Customer");
+        btnAddCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCustomerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,6 +153,20 @@ public class AddCustomerForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCustomerActionPerformed
+        try {
+            Customer customer = new Customer(txtId.getText(), txtName.getText(), txtAddress.getText(), Double.parseDouble(txtSalary.getText()));
+            boolean isAdded = CustomerController.addCustomer(customer);
+            if (isAdded) {
+                JOptionPane.showMessageDialog(this, "Customer added Successfully...");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddCustomerActionPerformed
 
     /**
      * @param args the command line arguments

@@ -4,6 +4,13 @@
  */
 package thogakade.view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import thogakade.controller.CustomerController;
+import thogakade.model.Customer;
+
 /**
  *
  * @author Nirodha
@@ -52,6 +59,11 @@ public class SearchCustomerForm extends javax.swing.JFrame {
         txtId.setBackground(new java.awt.Color(255, 255, 255));
         txtId.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtId.setForeground(new java.awt.Color(0, 0, 0));
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
 
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblName.setForeground(new java.awt.Color(0, 0, 0));
@@ -80,10 +92,20 @@ public class SearchCustomerForm extends javax.swing.JFrame {
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(0, 0, 0));
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         btnSearchCustomer.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSearchCustomer.setForeground(new java.awt.Color(0, 0, 0));
         btnSearchCustomer.setText("Search");
+        btnSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCustomerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,6 +163,31 @@ public class SearchCustomerForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        try {
+            Customer customer =CustomerController.searchCustomer(txtId.getText());
+            if(customer != null){
+                txtName.setText(customer.getName());
+                txtAddress.setText(customer.getAddress());
+                txtSalary.setText(String.valueOf(customer.getSalary()));
+            }else{
+                JOptionPane.showMessageDialog(this, "Customer Not Found...");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SearchCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtIdActionPerformed
+
+    private void btnSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCustomerActionPerformed
+        txtIdActionPerformed(evt);
+    }//GEN-LAST:event_btnSearchCustomerActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
