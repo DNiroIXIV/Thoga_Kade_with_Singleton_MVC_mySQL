@@ -4,6 +4,13 @@
  */
 package thogakade.view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import thogakade.controller.CustomerController;
+import thogakade.model.Customer;
+
 /**
  *
  * @author Nirodha
@@ -52,6 +59,11 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
         txtId.setBackground(new java.awt.Color(255, 255, 255));
         txtId.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtId.setForeground(new java.awt.Color(0, 0, 0));
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
 
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblName.setForeground(new java.awt.Color(0, 0, 0));
@@ -84,6 +96,11 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
         btnDeleteCustomer.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnDeleteCustomer.setForeground(new java.awt.Color(0, 0, 0));
         btnDeleteCustomer.setText("Delete");
+        btnDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteCustomerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,6 +158,42 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        try {
+            Customer customer = CustomerController.searchCustomer(txtId.getText());
+            if(customer != null){
+                txtName.setText(customer.getName());
+                txtAddress.setText(customer.getAddress());
+                txtSalary.setText(String.valueOf(customer.getSalary()));                
+            }else{
+                JOptionPane.showMessageDialog(this, "Customer Not Found...");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DeleteCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtIdActionPerformed
+
+    private void btnDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCustomerActionPerformed
+        try {
+            boolean isDeleted = CustomerController.deleteCustomer(txtId.getText());
+            if(isDeleted){
+                txtId.setText("");
+                txtName.setText("");
+                txtAddress.setText("");
+                txtSalary.setText("");
+                JOptionPane.showMessageDialog(this, "Customer Deleted Successfully...");
+            }else{
+                JOptionPane.showMessageDialog(this, "Customer Deletion Failed...");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DeleteCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteCustomerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDeleteCustomerActionPerformed
 
     /**
      * @param args the command line arguments
