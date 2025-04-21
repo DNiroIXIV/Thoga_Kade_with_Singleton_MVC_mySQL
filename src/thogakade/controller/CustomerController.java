@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import thogakade.db.DBConnection;
 import thogakade.model.Customer;
 
@@ -34,26 +35,26 @@ public class CustomerController {
     }
 
     public static Customer searchCustomer(String id) throws ClassNotFoundException, SQLException {
-        String SQL = "select * from customer where id = '"+id+"'";
+        String SQL = "select * from customer where id = '" + id + "'";
         Connection connection = DBConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(SQL);
-        if(result.next()){
-            Customer customer = new Customer(result.getString("id"), result.getString("name"), result.getString("address"), result.getDouble("salary"));            
+        if (result.next()) {
+            Customer customer = new Customer(result.getString("id"), result.getString("name"), result.getString("address"), result.getDouble("salary"));
             return customer;
         }
         return null;
     }
 
     public static boolean deleteCustomer(String id) throws ClassNotFoundException, SQLException {
-        String SQL = "delete from customer where id = '"+id+"'";
+        String SQL = "delete from customer where id = '" + id + "'";
         Connection connection = DBConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
         int reuslt = statement.executeUpdate(SQL);
         return reuslt > 0;
     }
-    
-    public static boolean updateCustomer(Customer customer) throws ClassNotFoundException, SQLException{
+
+    public static boolean updateCustomer(Customer customer) throws ClassNotFoundException, SQLException {
         String SQL = "update customer set name = ?, address = ?, salary = ? where id = ?";
         Connection connection = DBConnection.getInstance().getConnection();
         //Statement statement = connection.createStatement();
@@ -65,5 +66,17 @@ public class CustomerController {
         return preparedStatement.executeUpdate() > 0;
         //int reuslt = statement.executeUpdate(SQL);
         //return reuslt > 0;
+    }
+    
+    public static ArrayList<Customer> getAllCustomers() throws ClassNotFoundException, SQLException{
+        String SQL = "select * from customer";
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(SQL);
+        ArrayList<Customer> customerList = new ArrayList<>();
+        while(resultSet.next()){
+            customerList.add(new Customer(resultSet.getString("id"), resultSet.getString("name"), resultSet.getString("address"), resultSet.getDouble("salary")));
+        }
+        return customerList;
     }
 }
