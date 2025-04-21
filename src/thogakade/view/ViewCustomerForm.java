@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import thogakade.controller.CustomerController;
 import thogakade.model.Customer;
 
@@ -120,7 +118,7 @@ public class ViewCustomerForm extends javax.swing.JFrame {
         try {
             ArrayList<Customer> customerList = CustomerController.getAllCustomers();
             DefaultTableModel defaultTableModel = (DefaultTableModel)(tableCustomer.getModel());
-            defaultTableModel.setRowCount(0);
+            //defaultTableModel.setRowCount(0);
             for (Customer customer : customerList) {
                 Object[] rowData = {customer.getId(), customer.getName(), customer.getAddress(), customer.getSalary()};
                 defaultTableModel.addRow(rowData);
